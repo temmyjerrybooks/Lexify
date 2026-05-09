@@ -62,12 +62,6 @@
       "expo-asset",
       "expo-font"
     ],
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/1d235b4f-580e-4e89-81e9-4a17fc32a870"
-    },
     "extra": {
       "eas": {
         "projectId": "1d235b4f-580e-4e89-81e9-4a17fc32a870"
