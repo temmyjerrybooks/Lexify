@@ -11,8 +11,7 @@
     "build:ios": "eas build --platform ios",
     "submit:android": "eas submit --platform android",
     "submit:ios": "eas submit --platform ios",
-    "test": "jest --watchAll",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",

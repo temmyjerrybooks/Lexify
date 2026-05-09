@@ -128,7 +128,7 @@ Return ONLY this JSON:
 
 // ─── TEF/TCF Writing Scoring ────────────────────────────────────────────────
 
-const scoreTEFWriting = async ({ exam_type, task_number, question_text, user_answer }) => {
+const scoreTEFWriting = async ({ exam_type, _task_number, question_text, user_answer }) => {
   const systemPrompt = `You are an expert ${exam_type} examiner, fully trained in the official ${exam_type} scoring rubrics.
 The TEF Canada Expression Écrite is scored from 0 to 450 points across criteria including:
 - Réalisation de la tâche (task completion)

@@ -19,7 +19,7 @@ const enqueue = async (jobName, data, fallback) => {
 // POST /ai/score/writing
 const scoreWriting = async (req, res, next) => {
   try {
-    const { session_id, answer_id, question_id, task_number, question_text, user_answer, exam_type } = req.body;
+    const { session_id, answer_id, task_number, question_text, user_answer, exam_type } = req.body;
 
     if (!session_id) {
       return res.status(400).json({ error: 'session_id is required.' });
