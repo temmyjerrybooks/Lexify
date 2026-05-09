@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('C:/Users/PC/Examify/mobile/node_modules/jest-expo/bin/jest.js'\\)\")"
+    ]
+  }
+}
