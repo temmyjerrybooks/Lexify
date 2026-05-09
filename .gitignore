@@ -1,0 +1,58 @@
+# ── Environment & Secrets ─────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.production
+*.pem
+*.key
+
+# ── Node ──────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ── Build outputs ─────────────────────────────────────────────
+dist/
+build/
+out/
+.next/
+.nuxt/
+
+# ── Expo / React Native ───────────────────────────────────────
+.expo/
+.expo-shared/
+android/
+ios/
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+*.orig.*
+web-build/
+
+# ── Logs ──────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── OS / Editor ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ── Test & Coverage ───────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Misc ──────────────────────────────────────────────────────
+*.tgz
+.cache/
+tmp/
+temp/
+
+# ── Secrets / credentials ─────────────────────────────────────
+google-service-account.json

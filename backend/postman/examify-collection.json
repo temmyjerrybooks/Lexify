@@ -1,0 +1,468 @@
+{
+  "info": {
+    "name": "Examify API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+  },
+  "item": [
+
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/health"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@examify.com\",\n  \"password\": \"Password123!\",\n  \"username\": \"testuser\",\n  \"full_name\": \"Test User\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.access_token) {",
+                  "  pm.environment.set('access_token', json.access_token);",
+                  "  pm.environment.set('refresh_token', json.refresh_token);",
+                  "  pm.environment.set('user_id', json.user.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@examify.com\",\n  \"password\": \"Password123!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/auth/me"
+          }
+        },
+        {
+          "name": "Complete Onboarding",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/onboarding",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target_exam\": \"IELTS\",\n  \"target_band\": 7.5,\n  \"exam_date\": \"2026-09-01\",\n  \"country_code\": \"NG\",\n  \"timezone\": \"Africa/Lagos\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.access_token) {",
+                  "  pm.environment.set('access_token', json.access_token);",
+                  "  pm.environment.set('refresh_token', json.refresh_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/refresh",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/auth/forgot-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@examify.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/auth/logout"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Exams",
+      "item": [
+        {
+          "name": "List Exams",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/exams?exam_type=IELTS&page=1&limit=10",
+              "query": [
+                { "key": "exam_type", "value": "IELTS" },
+                { "key": "difficulty", "value": "INTERMEDIATE", "disabled": true },
+                { "key": "skill", "value": "READING", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Exam Details",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/exams/{{exam_id}}"
+          }
+        },
+        {
+          "name": "Daily Challenge",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/exams/daily-challenge"
+          }
+        },
+        {
+          "name": "Start Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.session_id) {",
+                  "  pm.environment.set('session_id', json.session_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/exams/{{exam_id}}/sessions/start",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"ios\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Session",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/exams/sessions/{{session_id}}"
+          }
+        },
+        {
+          "name": "Submit Answer",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.answer_id) {",
+                  "  pm.environment.set('answer_id', json.answer_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/exams/sessions/{{session_id}}/answer",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question_id\": \"REPLACE_WITH_QUESTION_ID\",\n  \"answer_options\": [\"A\"],\n  \"time_spent_seconds\": 45\n}"
+            }
+          }
+        },
+        {
+          "name": "Pause Session",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/exams/sessions/{{session_id}}/pause",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"current_question_index\": 3,\n  \"snapshot\": {}\n}"
+            }
+          }
+        },
+        {
+          "name": "Resume Session",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/exams/sessions/{{session_id}}/resume"
+          }
+        },
+        {
+          "name": "Complete Session",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.result_id) {",
+                  "  pm.environment.set('result_id', json.result_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/api/v1/exams/sessions/{{session_id}}/complete"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Questions",
+      "item": [
+        {
+          "name": "Adaptive Practice (Pro)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/questions?exam_type=IELTS&skill=READING&difficulty=INTERMEDIATE&limit=5",
+              "query": [
+                { "key": "exam_type", "value": "IELTS" },
+                { "key": "skill", "value": "READING" },
+                { "key": "difficulty", "value": "INTERMEDIATE" },
+                { "key": "tags", "value": "grammar", "disabled": true },
+                { "key": "limit", "value": "5" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Results",
+      "item": [
+        {
+          "name": "Get Single Result",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/results/{{result_id}}"
+          }
+        },
+        {
+          "name": "My Result History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/results?exam_type=IELTS&page=1&limit=20",
+              "query": [
+                { "key": "exam_type", "value": "IELTS", "disabled": true },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Analytics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/results/analytics?days=90",
+              "query": [
+                { "key": "days", "value": "90" },
+                { "key": "exam_type", "value": "IELTS", "disabled": true }
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "AI",
+      "item": [
+        {
+          "name": "Score Writing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.feedback_id) {",
+                  "  pm.environment.set('feedback_id', json.feedback_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/ai/score/writing",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"session_id\": \"{{session_id}}\",\n  \"answer_id\": \"{{answer_id}}\",\n  \"task_number\": 2,\n  \"exam_type\": \"IELTS\",\n  \"question_text\": \"Some people think that universities should provide students with more practical training for their future careers. Others believe the primary purpose of a university is to give access to knowledge for its own sake. Discuss both views and give your own opinion.\",\n  \"user_answer\": \"In today's rapidly evolving job market, the debate over whether universities should focus on practical training or theoretical knowledge has become increasingly relevant. While both perspectives have their merits, I believe a balanced approach is most beneficial for students. Those who advocate for practical training argue that universities exist to prepare students for the workforce. In an era where employers demand job-ready graduates, institutions that fail to provide hands-on experience may be doing their students a disservice. Internships, vocational training, and industry partnerships can significantly enhance employability. On the other hand, proponents of theoretical knowledge contend that universities serve a higher purpose: to cultivate critical thinking, intellectual curiosity, and a broad understanding of the world. Knowledge pursued for its own sake can lead to innovation, research breakthroughs, and societal progress that purely vocational training cannot achieve. In conclusion, universities should strive to offer both rigorous academic content and practical application opportunities, ensuring graduates are both intellectually equipped and career-ready.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Feedback Status",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ai/feedback/{{feedback_id}}"
+          }
+        },
+        {
+          "name": "Generate Questions",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/ai/generate-questions",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exam_type\": \"IELTS\",\n  \"skill\": \"READING\",\n  \"difficulty\": \"INTERMEDIATE\",\n  \"topic\": \"climate change\",\n  \"count\": 3\n}"
+            }
+          }
+        },
+        {
+          "name": "AI Tutor Chat",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/ai/tutor",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"What are the most common mistakes in IELTS Writing Task 2?\" }\n  ]\n}"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/api/v1/users/profile",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Test User Updated\",\n  \"target_band\": 8.0,\n  \"notification_enabled\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/users/notifications"
+          }
+        },
+        {
+          "name": "Mark Notification Read",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/api/v1/users/notifications/REPLACE_WITH_NOTIFICATION_ID/read"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Streaks",
+      "item": [
+        {
+          "name": "My Streak",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/streaks/me"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Leaderboard",
+      "item": [
+        {
+          "name": "Global Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/leaderboard?scope=global&limit=20",
+              "query": [
+                { "key": "scope", "value": "global" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Country Leaderboard",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/v1/leaderboard?scope=country&limit=20",
+              "query": [
+                { "key": "scope", "value": "country" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+
+  ]
+}

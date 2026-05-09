@@ -1,0 +1,49 @@
+{
+  "name": "examify-backend",
+  "version": "1.0.0",
+  "description": "Examify API — AI-powered language exam preparation platform",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src --ext .js",
+    "lint:fix": "eslint src --ext .js --fix",
+    "generate:charts": "node scripts/generateCharts.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.0",
+    "@google/generative-ai": "^0.24.1",
+    "@supabase/supabase-js": "^2.45.0",
+    "@upstash/redis": "^1.34.0",
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
+    "bull": "^4.16.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.1",
+    "form-data": "^4.0.0",
+    "groq-sdk": "^1.1.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.63.0",
+    "uuid": "^10.0.0",
+    "winston": "^3.15.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "eslint": "^9.12.0",
+    "jest": "^29.7.0",
+    "msedge-tts": "^2.0.5",
+    "nodemon": "^3.1.7",
+    "supertest": "^7.0.0"
+  }
+}

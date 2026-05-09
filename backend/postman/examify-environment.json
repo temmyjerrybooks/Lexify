@@ -1,0 +1,16 @@
+{
+  "id": "examify-env",
+  "name": "Examify Local",
+  "values": [
+    { "key": "base_url",      "value": "http://localhost:3001", "type": "default", "enabled": true },
+    { "key": "access_token",  "value": "",                      "type": "secret",  "enabled": true },
+    { "key": "refresh_token", "value": "",                      "type": "secret",  "enabled": true },
+    { "key": "user_id",       "value": "",                      "type": "default", "enabled": true },
+    { "key": "exam_id",       "value": "",                      "type": "default", "enabled": true },
+    { "key": "session_id",    "value": "",                      "type": "default", "enabled": true },
+    { "key": "answer_id",     "value": "",                      "type": "default", "enabled": true },
+    { "key": "result_id",     "value": "",                      "type": "default", "enabled": true },
+    { "key": "feedback_id",   "value": "",                      "type": "default", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment"
+}
