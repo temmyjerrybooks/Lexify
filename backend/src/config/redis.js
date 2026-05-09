@@ -21,11 +21,11 @@ const cache = {
   },
   async set(key, value, ttlSeconds = 300) {
     if (!redis) return;
-    try { await redis.set(key, value, { ex: ttlSeconds }); } catch {}
+    try { await redis.set(key, value, { ex: ttlSeconds }); } catch (_e) {}
   },
   async del(key) {
     if (!redis) return;
-    try { await redis.del(key); } catch {}
+    try { await redis.del(key); } catch (_e) {}
   },
 };
 
