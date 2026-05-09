@@ -26,17 +26,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Lint
         run: npm run lint --if-present
 
       - name: Test
-        run: npm test --if-present -- --watchAll=false --passWithNoTests
+        run: npm test -- --watchAll=false --passWithNoTests
 
   # ── OTA update on every push to main (JS-only changes, instant delivery) ────
   ota-update:
@@ -55,11 +53,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Set up Expo
         uses: expo/expo-github-action@v8
@@ -88,11 +84,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: mobile/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
       - name: Set up Expo
         uses: expo/expo-github-action@v8
