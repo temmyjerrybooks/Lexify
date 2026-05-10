@@ -10,6 +10,7 @@ const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 const { createRateLimiter } = require('./middleware/rateLimit');
 const logger = require('./utils/logger');
+const { startStreakReminderScheduler } = require('./services/streakReminder.service');
 
 // Start Bull workers (registers job processors; must run before any jobs are queued)
 require('./workers/ai.worker');
@@ -80,6 +81,9 @@ app.use(errorHandler);
 // ─── Start Server ──────────────────────────────────────────
 const server = app.listen(PORT, () => {
   logger.info(`Examify API running on port ${PORT} [${process.env.NODE_ENV}]`);
+  if (process.env.NODE_ENV !== 'test') {
+    startStreakReminderScheduler();
+  }
 });
 
 // Graceful shutdown — close DB connections before exiting

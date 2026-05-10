@@ -4,7 +4,14 @@ const logger = require('../utils/logger');
 
 const APP_ID = process.env.ONESIGNAL_APP_ID;
 const API_KEY = process.env.ONESIGNAL_API_KEY;
-const configured = APP_ID && APP_ID !== 'your-app-id';
+const configured = APP_ID && APP_ID !== 'your-app-id' && API_KEY && API_KEY !== 'your-api-key';
+
+const getAuthHeader = () => {
+  if (!API_KEY) return '';
+  if (API_KEY.startsWith('Key ')) return API_KEY;
+  if (API_KEY.startsWith('Basic ')) return `Key ${API_KEY.slice('Basic '.length).trim()}`;
+  return `Key ${API_KEY}`;
+};
 
 // Send a push via OneSignal to a specific user (tagged by user_id at registration)
 const sendPush = async (userId, title, body, data = {}) => {
@@ -14,7 +21,7 @@ const sendPush = async (userId, title, body, data = {}) => {
   }
   try {
     const { data: result } = await axios.post(
-      'https://onesignal.com/api/v1/notifications',
+      'https://api.onesignal.com/notifications',
       {
         app_id: APP_ID,
         include_aliases: { external_id: [userId] },
@@ -23,7 +30,7 @@ const sendPush = async (userId, title, body, data = {}) => {
         contents: { en: body },
         data,
       },
-      { headers: { Authorization: `Basic ${API_KEY}`, 'Content-Type': 'application/json' } }
+      { headers: { Authorization: getAuthHeader(), 'Content-Type': 'application/json' } }
     );
     logger.info(`Push sent to user ${userId}: "${title}" (id=${result.id})`);
     return result;
@@ -58,12 +65,13 @@ const sendScoreReady = async (userId, skill, score, feedbackId) => {
   ]);
 };
 
-const sendStreakReminder = async (userId, currentStreak) => {
+const sendStreakReminder = async (userId, currentStreak, metadata = {}) => {
   const title = currentStreak > 0 ? `Keep your ${currentStreak}-day streak alive!` : 'Start your streak today!';
   const body = 'Practice for just 10 minutes to maintain your progress.';
+  const data = { type: 'streak_reminder', current_streak: currentStreak, ...metadata };
   await Promise.all([
-    sendPush(userId, title, body, { type: 'streak_reminder' }),
-    saveInApp(userId, title, body, 'streak_reminder', { current_streak: currentStreak }),
+    sendPush(userId, title, body, data),
+    saveInApp(userId, title, body, 'streak_reminder', data),
   ]);
 };
 
